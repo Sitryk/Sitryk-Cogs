@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Sitryk",
+    "SHORT" : "Diss someone by their name",
+    "DESCRIPTION" : "Diss someone by their name, add disses, add names",
+    "DISABLED" : false,
+    "NAME" : "Diss",
+    "TAGS" : ["fun", "diss"],
+    "INSTALL_MSG" : "Thank you for installing Diss from Sitryk's Cogs.\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs"
+}
