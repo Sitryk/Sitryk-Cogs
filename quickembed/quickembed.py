@@ -39,7 +39,7 @@ class QEmbed:
 
     @_qeset.command(name="defaultColour")
     async def _qeset_defaultcolour(self, colour):
-        """Used to change the default colour of embeds if a colour isn't specified"""
+        """Used to change the default colour of embeds if a colour is not specified"""
         if colour.lower() not in self.colours:
             await self.bot.say("Sorry! Trouble setting {} as your default colour.".format(colour))
             return
@@ -50,7 +50,9 @@ class QEmbed:
 
     @commands.command(pass_context=True)
     async def qembed(self, ctx, text, color=None):
-        """Used to make a quick embed {0} corresponds to server"""
+        """Used to make a quick embed
+        
+        {0} corresponds to server, a hexadecimal code can be used without a hashtag"""
         if color is None:
             embed_color = self.colours[self.data["default_colour"]]()
         elif color.lower() not in self.colours:
