@@ -18,11 +18,11 @@ class LyricsCog:
     async def lyrics(self, ctx, artist, song):
         """Used to fetch lyrics from a song
 
-            Usage: [p]lyric 'kendrick lamar' 'humble" """
+            Usage: [p]lyric 'kendrick lamar' 'humble' """
 
         if artist == "":
             await self.bot.say("Please supply an artist")
-        elif song == "Please supply a song":
+        elif song == "":
             await self.bot.say("Please supply a song title")
         else:
             lyrics = lyricsearch(artist, song)
@@ -33,7 +33,7 @@ class LyricsCog:
                     lyrics = pagify(lyrics)
                     for page in lyrics:
                         await self.bot.whisper(page)
-                except discord.errors.Forbibben:
+                except discord.DiscordException:
                     await self.bot.say("I can't send messages to this user.")
         
 
