@@ -29,9 +29,12 @@ class LyricsCog:
             if lyrics == None:
                 await self.bot.whisper("Sorry! I couldn't find any lyrics with your search terms.")
             else:
-                lyrics = pagify(lyrics)
-                for page in lyrics:
-                    await self.bot.whisper(page)
+                try:
+                    lyrics = pagify(lyrics)
+                    for page in lyrics:
+                        await self.bot.whisper(page)
+                except discord.errors.Forbibben:
+                    await self.bot.say("I can't send messages to this user.")
         
 
 base_url = "https://api.genius.com"
