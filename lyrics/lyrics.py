@@ -38,7 +38,7 @@ class LyricsCog:
         
 
 base_url = "https://api.genius.com"
-headers = {'Authorization': 'Bearer token'} # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
+headers = {'Authorization': 'Bearer 2wjXkB5_rWzVnEFOKwFMWhJOwvNPAlFDTywyaRK0jc3gtrCZjx8CsaXjzcE-2_4j'} # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
 
 def lyrics_from_song_api_path(song_api_path):
   song_url = base_url + song_api_path
