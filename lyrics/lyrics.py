@@ -15,7 +15,7 @@ class LyricsCog:
         self.artist = ""
 
     @commands.command(pass_context=True)
-    async def lyric(self, ctx, artist, song):
+    async def lyrics(self, ctx, artist, song):
         """Used to fetch lyrics from a song
 
             Usage: [p]lyric 'kendrick lamar' 'humble" """
