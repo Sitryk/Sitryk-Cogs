@@ -1,1 +1,9 @@
-edit this later
+{
+    "AUTHOR" : "Sitryk",
+    "SHORT" : "Used to search for lyrics from a song",
+    "DESCRIPTION" : "Search for lyrics of your favourite song, all you need to know is the name of the artist and the name of the song",
+    "DISABLED" : false,
+    "NAME" : "LyricsCog",
+    "TAGS" : ["lyrics", "utility", "music"],
+    "INSTALL_MSG" : "Thank's for installing lyrics from Sitryk's Cogs.\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs"
+}
