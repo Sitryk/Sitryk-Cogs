@@ -3,9 +3,9 @@ from .utils.chat_formatting import pagify
 import discord, requests
 try:
   from bs4 import BeautifulSoup
-  bs4Installed = True
+  soupAvailable = True
 except:
-  bs4Installed = False
+  soupAvailable = False
 
 class LyricsCog:
 
@@ -67,5 +67,8 @@ def lyricsearch(artist, song):
     return lyrics_from_song_api_path(song_api_path)
 
 def setup(bot):
-    n = LyricsCog(bot)
-    bot.add_cog(n)
+    if soupAvailable:
+        n = LyricsCog(bot)
+        bot.add_cog(n)
+    else:
+        raise RuntimeError("You need to run `pip3 install beautifulsoup4`")
