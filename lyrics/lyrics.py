@@ -1,6 +1,6 @@
 from discord.ext import commands
 from .utils.chat_formatting import pagify
-import discord, requests
+import discord, requests, random
 try:
   from bs4 import BeautifulSoup
   soupAvailable = True
@@ -15,7 +15,7 @@ class LyricsCog:
         self.artist = ""
 
     @commands.command(pass_context=True)
-    async def lyrics(self, ctx, artist, song):
+    async def lyrics(self, ctx, searchterm):
         """Used to fetch lyrics from a song
 
             Usage: [p]lyric 'kendrick lamar' 'humble' """
@@ -25,16 +25,22 @@ class LyricsCog:
         elif song == "":
             await self.bot.say("Please supply a song title")
         else:
-            lyrics = lyricsearch(artist, song)
-            if lyrics == None:
-                await self.bot.whisper("Sorry! I couldn't find any lyrics with your search terms.")
-            else:
-                try:
-                    lyrics = pagify(lyrics)
-                    for page in lyrics:
-                        await self.bot.whisper(page)
-                except discord.DiscordException:
-                    await self.bot.say("I can't send messages to this user.")
+            searchList = lyricsearch(searchterm)
+            searchText
+            for index, item in enumerate(searchList):
+              searchText += "\n\n**{}.** {} - {}".format(index +1, searchList[0], searchList[1]) 
+            chooseList = discord.Embed(description = searchText,color=discord.Color(random.randint(0, 0xffffff)))
+            await self.bot.say(embed = chooseList)
+            #lyrics = lyricsearch(searchterm)
+            #if lyrics == None:
+                #await self.bot.whisper("Sorry! I couldn't find any lyrics with your search terms.")
+            #else:
+                #try:
+                    #lyrics = pagify(lyrics)
+                    #for page in lyrics:
+                        #await self.bot.whisper(page)
+                #except discord.DiscordException:
+                    #await self.bot.say("I can't send messages to this user.")
         
 
 base_url = "https://api.genius.com"
@@ -55,19 +61,22 @@ def lyrics_from_song_api_path(song_api_path):
   lyrics = html.find("div", class_="lyrics").get_text() #updated css where the lyrics are based in HTML
   return lyrics
 
-def lyricsearch(artist, song):
+def lyricsearch(searchterm):
   search_url = base_url + "/search"
-  data = {'q': song}
+  data = {'q': searchterm}
   response = requests.get(search_url, data=data, headers=headers)
   json = response.json()
   song_info = None
+  items = []
   for hit in json["response"]["hits"]:
-    if hit["result"]["primary_artist"]["name"].lower() == artist.lower():
-      song_info = hit
-      break
-  if song_info:
-    song_api_path = song_info["result"]["api_path"]
-    return lyrics_from_song_api_path(song_api_path)
+    items.append([hit["result"]["primary_artist"]["name"], hit["result"]["title"]])
+  return items
+    #if hit["result"]["primary_artist"]["name"].lower() == artist.lower():
+    #  song_info = hit
+    #  break
+  #if song_info:
+  #  song_api_path = song_info["result"]["api_path"]
+  #  return lyrics_from_song_api_path(song_api_path)
 
 def setup(bot):
     if soupAvailable:
