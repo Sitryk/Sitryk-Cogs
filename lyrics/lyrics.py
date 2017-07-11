@@ -10,7 +10,7 @@ try:
 except:
     soupAvailable = False
 
-DEFAULT_SETTINGS = {"send_in_channel" : True}
+DEFAULT_SETTINGS = {"send_in_channel" : False}
 
 class Lyrics:
 
