@@ -51,6 +51,7 @@ class Lyrics:
                 send = self.bot.whisper
             try:
                 lyrics = pagify(lyricsearch(searchterm, int(choice.content)-1))
+                await send("Here are the lyrics for **{}**\n\n".format(" - ".join(searchList[int(choice.content)-1])))
                 for page in lyrics:
                     await send(page)
             except discord.DiscordException:
