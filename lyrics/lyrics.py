@@ -1,17 +1,22 @@
 from discord.ext import commands
+from .utils import checks
+from .utils.dataIO import dataIO
 from .utils.chat_formatting import pagify
-import discord, requests, random
+import discord, requests, random, os
 try:
     from bs4 import BeautifulSoup
     soupAvailable = True
 except:
     soupAvailable = False
 
+DEFAULT_SETTINGS = {"send_in_channel" : True}
 
 class Lyrics:
 
     def __init__(self, bot):
         self.bot = bot
+        self.JSON = "data/Sitryk-Cogs/lyrics/settings.json"
+        self.settings = dataIO.load_json(self.JSON)
 
     @commands.command(pass_context=True)
     async def lyrics(self, ctx, *, searchterm: str):
@@ -39,18 +44,40 @@ class Lyrics:
             await self.bot.say("Cancelling lyric search.")
             return
         else:
+            if self.settings["send_in_channel"]:
+                send = self.bot.say
+            else:
+                send = self.bot.whisper
+            try:
+                lyrics = pagify(lyricsearch(searchterm, int(choice.content)-1))
+                for page in lyrics:
+                    await send(page)
+            except discord.DiscordException:
+                await self.bot.say("I can't send messages to this user.")
             try:
                 await self.bot.say("I've sent you the lyrics for **{}**".format(" - ".join(searchList[int(choice.content)-1])))
             except IndexError:
                 await self.bot.say("Cancelling lyric search.")
                 return
-            try:
-                lyrics = pagify(lyricsearch(searchterm, int(choice.content)-1))
-                for page in lyrics:
-                    await self.bot.whisper(page)
-            except discord.DiscordException:
-                await self.bot.say("I can't send messages to this user.")
+        
+    @commands.group(name="lyricset", pass_context=True)
+    async def _lyricset(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await send_cmd_help(ctx)
+            await self.bot.say(box("SEND IN CHANNEL: {}" .format(self.settings["send_in_channel"])))
 
+    @_lyricset.command(name="channel", pass_context=True)
+    @checks.mod()
+    async def _lyricset_channel(self, ctx):
+        """Toggle between sending in chat and sending to DMs"""
+        self.settings["send_in_channel"] = not self.settings["send_in_channel"]
+        dataIO.save_json(self.JSON, self.settings)
+        if self.settings["send_in_channel"] == True:
+            await self.bot.say("I will now send lyrics in the channel.")
+        elif self.settings["send_in_channel"] == False:
+            await self.bot.say("I will now send lyrics via message.")
+        else:
+            await self.bot.say("Huh, strange - try again maybe? ")
 
 base_url = "https://api.genius.com"
 headers = {'Authorization': 'Bearer 2wjXkB5_rWzVnEFOKwFMWhJOwvNPAlFDTywyaRK0jc3gtrCZjx8CsaXjzcE-2_4j'}  # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
@@ -87,6 +114,18 @@ def lyricsearch(searchterm, choice=None):
         song_info = json['response']['hits'][choice]['result']['api_path']
         return lyrics_from_song_api_path(song_info)
 
+def check_folders():
+    paths = ["data/Sitryk-Cogs/lyrics"]
+    for path in paths:
+        if not os.path.exists(path):
+            print("Creating {} folder...".format(path))
+            os.makedirs(path)
+
+def check_files():
+    f = "data/Sitryk-Cogs/lyrics/settings.json"
+    if not dataIO.is_valid_json(f):
+        print("Creating empty settings.json...")
+        dataIO.save_json(f, DEFAULT_SETTINGS)
 
 def setup(bot):
     if soupAvailable:
