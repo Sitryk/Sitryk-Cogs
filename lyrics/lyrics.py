@@ -129,6 +129,8 @@ def check_files():
 
 def setup(bot):
     if soupAvailable:
+        check_folders()
+        check_files()
         n = Lyrics(bot)
         bot.add_cog(n)
     else:
