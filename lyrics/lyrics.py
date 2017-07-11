@@ -56,7 +56,10 @@ class Lyrics:
             except discord.DiscordException:
                 await self.bot.say("I can't send messages to this user.")
             try:
-                await self.bot.say("I've sent you the lyrics for **{}**".format(" - ".join(searchList[int(choice.content)-1])))
+                if self.settings["send_in_channel"]:
+                    await self.bot.say("Here are the lyrics for **{}**".format(" - ".join(searchList[int(choice.content)-1])))
+                else:
+                    await self.bot.say("I've sent you the lyrics for **{}**".format(" - ".join(searchList[int(choice.content)-1])))
             except IndexError:
                 await self.bot.say("Cancelling lyric search.")
                 return
