@@ -1,4 +1,5 @@
 from discord.ext import commands
+from __main__ import send_cmd_help
 from .utils import checks
 from .utils.dataIO import dataIO
 from .utils.chat_formatting import pagify
