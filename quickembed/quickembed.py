@@ -4,8 +4,15 @@ import random, os, discord
 from .utils.dataIO import dataIO
 
 default_settings = {"default_colour" : "red"}
+
 def returnhex():
     return random.randint(0, 0xFFFFFF)
+
+def validhex(value):
+    if value in range(0, 0x1000000):
+        return True
+    return False
+
 class QEmbed:
 
     def __init__(self, bot):
@@ -14,7 +21,7 @@ class QEmbed:
         self.data = dataIO.load_json(self.JSON)
         self.colours = { "red" : discord.Color.red,
                          "dark_red" : discord.Color.dark_red,
-                         "blue" : discord.Color.blue(),
+                         "blue" : discord.Color.blue,
                          "dark_blue" : discord.Color.dark_blue,
                          "teal" : discord.Color.teal,
                          "dark_teal" :discord.Color.dark_teal,
@@ -36,6 +43,7 @@ class QEmbed:
     async def _qeset(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
+            await self.bot.say("```\nDEFAULT COLOUR: {}\n```".format(self.data["default_colour"]))
 
     @_qeset.command(name="defaultColour")
     async def _qeset_defaultcolour(self, colour):
@@ -46,7 +54,7 @@ class QEmbed:
         else:
             self.data["default_colour"] = colour.lower()
             dataIO.save_json(self.JSON, self.data)
-        await self.bot.say("Default embed colour changed to: " + colour)
+        await self.bot.say("Default embed colour changed to: " + colour) 
 
     @commands.command(pass_context=True)
     async def qembed(self, ctx, text, color=None):
@@ -56,13 +64,12 @@ class QEmbed:
         if color is None:
             embed_color = self.colours[self.data["default_colour"]]()
         elif color.lower() not in self.colours:
-            if len(color) == 6:
-                try:
-                    color = int(color, 16)
-                    embed_color = discord.Color(color)
-                except:
-                    embed_color = self.colours[self.data["default_colour"]]()
+            if color.startswith('#'):
+                color = color[1:]
+            if validhex(int(color, 16)):
+                embed_color = discord.Color(int(color, 16))
             else:
+                await self.bot.whisper("Maybe a valid colour hex would work well instead eh?")
                 msg = "Available colors: \n"
                 for x in self.colours:
                     msg += "\n" + x
@@ -71,7 +78,8 @@ class QEmbed:
                 return
         else:
             embed_color = self.colours[color]()
-        embed = discord.Embed(description=text.format(ctx.message.server), color=embed_color)
+            
+        embed = discord.Embed(description=text.format(ctx.message.server, ctx.message.author, ctx), color=embed_color)
         await self.bot.say(embed=embed)
 
 def check_folders():
