@@ -2,9 +2,9 @@
 {
     "AUTHOR" : "Sitryk",
     "SHORT" : "Quickly embed a message",
-    "DESCRIPTION" : "Quickly embed a message from the bot because it looks nice I guess",
+    "DESCRIPTION" : "Quickly embed a message from the bot because it looks nice? Heh",
     "DISABLED" : false,
-    "NAME" : "QEmbed",
+    "NAME" : "QuickEmbed",
     "TAGS" : ["embed", "utility"],
     "INSTALL_MSG" : "Thank's for installing QuickEmbed from Sitryk's Cogs.\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs"
 }
