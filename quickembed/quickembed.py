@@ -13,7 +13,7 @@ def validhex(value):
         return True
     return False
 
-class QEmbed:
+class QuickEmbed:
 
     def __init__(self, bot):
         self.bot = bot
@@ -90,12 +90,7 @@ class QEmbed:
             embed_color = self.colours[color]()
         
         embed = discord.Embed(description=text.format(server=ctx.message.server, author=ctx.message.author, channel=ctx.message.channel, message=ctx.message ctx=ctx), color=embed_color)
-        try:
-            await self.bot.say(embed=embed)
-        except discord.HTTPException:
-            await self.bot.say("I don't have permissions to send embeds.")
-        except Exception as e:
-            await self.bot.say("There was an error: [{}]".format(e))
+        await self.bot.say(embed=embed)
 
 def check_folders():
     paths = ["data/Sitryk-Cogs/quickembed"]
