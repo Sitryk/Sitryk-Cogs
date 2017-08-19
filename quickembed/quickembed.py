@@ -60,7 +60,12 @@ class QEmbed:
     async def qembed(self, ctx, text, color=None):
         """Used to make a quick embed
         
-        {0} corresponds to server, a hexadecimal code can be used without a hashtag"""
+        {server} is ctx.message.server
+        {author} is ctx.message.author
+        {channel} is ctx.message.channel
+        {message} is ctx.message
+        {ctx} is ctx
+        """
 
         invalid = "Maybe a valid colour hex would work well instead eh?\nAvailable colors: \n"
         for x in self.colours:
@@ -83,9 +88,14 @@ class QEmbed:
                 return
         else:
             embed_color = self.colours[color]()
-            
-        embed = discord.Embed(description=text.format(ctx.message.server, ctx.message.author, ctx), color=embed_color)
-        await self.bot.say(embed=embed)
+        
+        embed = discord.Embed(description=text.format(server=ctx.message.server, author=ctx.message.author, channel=ctx.message.channel, message=ctx.message ctx=ctx), color=embed_color)
+        try:
+            await self.bot.say(embed=embed)
+        except discord.HTTPException:
+            await self.bot.say("I don't have permissions to send embeds.")
+        except Exception as e:
+            await self.bot.say("There was an error: [{}]".format(e))
 
 def check_folders():
     paths = ["data/Sitryk-Cogs/quickembed"]
