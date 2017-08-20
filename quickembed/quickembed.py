@@ -1,6 +1,7 @@
 from discord.ext import commands
 from __main__ import send_cmd_help
 import random, os, discord
+from .utils import checks
 from .utils.dataIO import dataIO
 
 default_settings = {"default_colour" : "red"}
@@ -40,6 +41,7 @@ class QuickEmbed:
 
 
     @commands.group(name="qeset", pass_context=True)
+    @checks.is_owner()
     async def _qeset(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
@@ -57,6 +59,7 @@ class QuickEmbed:
         await self.bot.say("Default embed colour changed to: " + colour) 
 
     @commands.command(pass_context=True)
+    @checks.is_owner()
     async def qembed(self, ctx, text, color=None):
         """Used to make a quick embed
         
