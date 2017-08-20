@@ -89,7 +89,7 @@ class QuickEmbed:
         else:
             embed_color = self.colours[color]()
         
-        embed = discord.Embed(description=text.format(server=ctx.message.server, author=ctx.message.author, channel=ctx.message.channel, message=ctx.message ctx=ctx), color=embed_color)
+        embed = discord.Embed(description=text.format(server=ctx.message.server, author=ctx.message.author, channel=ctx.message.channel, message=ctx.message, ctx=ctx), color=embed_color)
         await self.bot.say(embed=embed)
 
 def check_folders():
