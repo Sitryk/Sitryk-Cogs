@@ -2,6 +2,7 @@
     "AUTHOR" : "Sitryk",
     "SHORT" : "Used to search for lyrics from a query",
     "DESCRIPTION" : "Search for lyrics with the Genius API",
+    "REQUIREMENTS" : ["BeautifulSoup4"],
     "DISABLED" : false,
     "NAME" : "Lyrics",
     "TAGS" : ["lyrics", "utility", "music"],
