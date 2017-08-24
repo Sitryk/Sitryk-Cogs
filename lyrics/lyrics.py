@@ -38,7 +38,7 @@ class Lyrics:
         if not choice.content.isdigit():
             await self.bot.say("Cancelling lyric search.")
             return
-        if int(choice.content) not in range(0, 11):
+        if int(choice.content) not in range(0, len(items_list)+1):
             await self.bot.say("Cancelling lyric search.")
             return
         if int(choice.content) == 0:
