@@ -114,5 +114,5 @@ def check_files():
 def setup(bot):
     check_folders()
     check_files()
-    n = QEmbed(bot)
+    n = QuickEmbed(bot)
     bot.add_cog(n)
