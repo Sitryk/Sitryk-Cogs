@@ -108,19 +108,29 @@ class Lyrics:
             await self.bot.say("```\nLYRIC CHANNEL:\t{}\n```".format(channel.name))
 
     @_lyricset.command(name="channel", pass_context=True)
-    async def _lyricset_channel(self, ctx, channel: discord.Channel):
+    async def _lyricset_channel(self, ctx, channel):
         """Set the channel in which lyrics are posted
         Whispers if no channel is set
+        to remove channel just enter 'None'
         """
 
         server = ctx.message.server
         if channel is None:
             await send_cmd_help(ctx)
             return
-        self.settings[server.id]["CHANNEL"] = channel.id
-        dataIO.save_json(self.JSON, self.settings)
-        channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
-        await self.bot.say("Lyrics will now be sent to {}".format(channel.mention))
+        if channel is discord.Channel
+            self.settings[server.id]["CHANNEL"] = channel.id
+            dataIO.save_json(self.JSON, self.settings)
+            channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
+            await self.bot.say("Lyrics will now be sent to {}".format(channel.mention))
+        elif channel == 'None':
+            self.settings[server.id]["CHANNEL"] = None
+            dataIO.save_json(self.JSON, self.settings)
+            await self.bot.say("Lyrics will now be sent in DMs")
+        else:
+            await send_cmd_help(ctx)
+            return
+            
 
 api_url = "https://api.genius.com"
 headers = {'Authorization': 'Bearer 2wjXkB5_rWzVnEFOKwFMWhJOwvNPAlFDTywyaRK0jc3gtrCZjx8CsaXjzcE-2_4j'}  # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
