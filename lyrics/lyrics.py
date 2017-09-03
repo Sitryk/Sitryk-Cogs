@@ -24,9 +24,9 @@ class Lyrics:
         """Used to fetch lyrics from a song
            Usage: [p]lyrics humble"""
 
-        searchList = lyricsearch(searchterm)
+        items = lyricsearch(searchterm)
         searchText = ""
-        for index, item in enumerate(searchList):
+        for index, item in enumerate(items):
             searchText += "\n\n**{}.** {}".format(index +1, " - ".join(item))
         chooseList = discord.Embed(description = searchText, color = discord.Color.red())
         chooseList.set_footer(text="*Type the corresponding number or 0 to cancel*")
@@ -38,7 +38,7 @@ class Lyrics:
         if not choice.content.isdigit():
             await self.bot.say("Cancelling lyric search.")
             return
-        if int(choice.content) not in range(0, len(items_list)+1):
+        if int(choice.content) not in range(0, len(items)+1):
             await self.bot.say("Cancelling lyric search.")
             return
         if int(choice.content) == 0:
@@ -50,8 +50,10 @@ class Lyrics:
             else:
                 send = self.bot.whisper
             try:
-                lyrics = pagify(lyricsearch(searchterm, int(choice.content)-1))
-                await send(embed=discord.Embed(description="**Here are the lyrics for** ***{}***\n\n".format(" - ".join(searchList[int(choice.content)-1])), color=discord.Color.red()))
+                choice = int(choice.content)
+                lyrics = (lyricsearch(searchterm, choice-1))
+                lyrics = pagify(lyrics)
+                await send(embed=discord.Embed(description="**Here are the lyrics for** ***{}***\n\n".format(" - ".join(items[choice-1])), color=discord.Color.red()))
                 for page in lyrics:
                     await send(page)
             except discord.DiscordException:
