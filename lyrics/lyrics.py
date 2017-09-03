@@ -35,8 +35,6 @@ class Lyrics:
         server = ctx.message.server
         author = ctx.message.author
 
-        self._default_set(ctx.message)
-
         place_holder = await self.bot.say(embed=discord.Embed(description="Gathering information...", colour=discord.Colour.orange()))
 
         items = lyricsearch(query)
@@ -105,7 +103,6 @@ class Lyrics:
         """Used to change lyric settings"""
         server = ctx.message.server
         if ctx.invoked_subcommand is None:
-            self._default_set(ctx.message)
             await send_cmd_help(ctx)
             channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
             await self.bot.say("```\nLYRIC CHANNEL:\t{}\n```".format(channel.name))
@@ -117,7 +114,6 @@ class Lyrics:
         """
 
         server = ctx.message.server
-        self._default_set(server)
         if channel is None:
             await send_cmd_help(ctx)
             return
@@ -125,13 +121,6 @@ class Lyrics:
         dataIO.save_json(self.JSON, self.settings)
         channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
         await self.bot.say("Lyrics will now be sent to {}".format(channel.mention))
-
-    def _default_set(self, ctx):
-        server = ctx.message.server
-        channel = ctx.message.channel
-        if server.id not in self.settings:
-            self.settings[server.id] = {"CHANNEL" : channel.id}
-            dataIO.save_json(self.JSON, self.settings)
 
 api_url = "https://api.genius.com"
 headers = {'Authorization': 'Bearer 2wjXkB5_rWzVnEFOKwFMWhJOwvNPAlFDTywyaRK0jc3gtrCZjx8CsaXjzcE-2_4j'}  # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
