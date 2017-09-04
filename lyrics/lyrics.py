@@ -132,7 +132,12 @@ class Lyrics:
             dataIO.save_json(self.JSON, self.settings)
             await self.bot.say("Lyrics will now be sent in DMs")
             return
-
+    async def set_settings(self, ctx):
+        server = ctx.message.server
+        channel = ctx.message.channel
+        if server.id not in self.settings:
+            self.settings[server.id] = DEFAULT_SETTINGS
+        dataIO.save_json(self.JSON, self.settings)
 
 
 api_url = "https://api.genius.com"
