@@ -26,7 +26,6 @@ class Lyrics:
         self.settings = dataIO.load_json(self.JSON)
 
     @commands.command(pass_context=True)
-    @commands.cooldown(5, 30, Buckettype.user)
     async def lyrics(self, ctx, *, query: str):
         """Used to fetch lyrics from a search query
            Usage: [p]lyrics white ferrari
