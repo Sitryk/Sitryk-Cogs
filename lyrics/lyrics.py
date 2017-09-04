@@ -123,8 +123,8 @@ class Lyrics:
         if channel is None:
             await send_cmd_help(ctx)
             return
-        if channel is discord.Channel:
-            self.settings[server.id]["CHANNEL"] = channel.id
+        if channel.channel_mentions:
+            self.settings[server.id]["CHANNEL"] = channel.channel_mentions[0].id
             dataIO.save_json(self.JSON, self.settings)
             channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
             await self.bot.say("Lyrics will now be sent to {}".format(channel.mention))
