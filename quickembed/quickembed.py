@@ -79,10 +79,10 @@ class QuickEmbed:
                 if validhex(int(color, 16)):
                     embed_color = discord.Color(int(color, 16))
             except ValueError:
-                await send_cmd_help(ctx)
+                await self.bot.send_cmd_help(ctx)
                 return
             if not validhex(int(color, 16)):
-                await send_cmd_help(ctx)
+                await self.bot.send_cmd_help(ctx)
                 return
         else:
             embed_color = self.colours[color]()
