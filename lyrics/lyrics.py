@@ -34,6 +34,8 @@ class Lyrics:
 
         server = ctx.message.server
         author = ctx.message.author
+        
+        self.set_settings(ctx)
 
         place_holder = await self.bot.say(embed=discord.Embed(description="Gathering information...", colour=discord.Colour.orange()))
 
@@ -103,6 +105,7 @@ class Lyrics:
     @checks.mod()
     async def _lyricset(self, ctx):
         """Used to change lyric settings"""
+        self.set_settings(ctx)
         server = ctx.message.server
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
@@ -119,7 +122,7 @@ class Lyrics:
         Whispers if no channel is set
         to remove channel just enter 'None'
         """
-
+        self.set_settings(ctx)
         server = ctx.message.server
         if channel:
             self.settings[server.id]["CHANNEL"] = channel.id
