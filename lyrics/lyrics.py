@@ -52,7 +52,7 @@ class Lyrics:
             await self.bot.say("I need the \"Embed links\" Permission")
             return
 
-        choice = await self.bot.wait_for_message(timeout=20, author = ctx.message.author, channel = _sent_in.channel)
+        choice = await self.bot.wait_for_message(timeout=20, author = ctx.message.author, channel = place_holder.channel)
 
         if choice is None:
             await self.bot.edit_message(place_holder, embed=discord.Embed(description="Cancelling - Timed out", colour=discord.Colour.red()))
