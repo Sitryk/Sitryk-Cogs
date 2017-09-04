@@ -106,6 +106,10 @@ class Lyrics:
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
             channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
+            if channel is None:
+                ch = 'DMs'
+            else:
+                ch = channel.name
             await self.bot.say("```\nLYRIC CHANNEL:\t{}\n```".format(ch))
 
     @_lyricset.command(name="channel", pass_context=True)
