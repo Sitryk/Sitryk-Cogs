@@ -76,7 +76,6 @@ class Lyrics:
             lyrics = lyrics_from_song_path(song)
             lyrics = pagify(lyrics)
 
-            choice = int(choice.content)
             if self.settings[server.id]["CHANNEL"] is None:
                 send = self.bot.whisper
                 w = True
