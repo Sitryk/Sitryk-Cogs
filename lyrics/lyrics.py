@@ -74,16 +74,17 @@ class Lyrics:
             song = items[choice]['song_path']
             lyrics = lyrics_from_song_path(song)
             lyrics = pagify(lyrics)
-            
+
             choice = int(choice.content)
             if self.settings[server.id]["CHANNEL"] is None:
                 send = self.bot.whisper
                 w = True
             else:
+                w = False
                 send = self.bot.send_message
                 channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
 
-            if c is True:
+            if w is True:
                 await self.bot.edit_message(place_holder, embed=discord.Embed(description="**I've sent you the lyrics for** ***{} - {}***\n\n".format(items[choice]['song_title'], items[choice]['artist_name']), color=discord.Color.green()))
                 await send(embed=discord.Embed(description="**Following are the lyrics for** ***{} - {}***\n\n".format(items[choice]['song_title'], items[choice]['artist_name']), color=discord.Color.green()))
                 asyncio.sleep(0.2)
@@ -134,7 +135,7 @@ class Lyrics:
         else:
             await send_cmd_help(ctx)
             return
-            
+
 
 api_url = "https://api.genius.com"
 headers = {'Authorization': 'Bearer 2wjXkB5_rWzVnEFOKwFMWhJOwvNPAlFDTywyaRK0jc3gtrCZjx8CsaXjzcE-2_4j'}  # Bearer Token should look like "Bearer" + token e.g. "Bearer 1234tokentokentoken"
