@@ -70,11 +70,6 @@ class QuickEmbed:
         {ctx} is ctx
         """
 
-        invalid = "Maybe a valid colour hex would work well instead eh?\nAvailable colors: \n"
-        for x in self.colours:
-            invalid += "\n" + x
-        invalid += "\n\nNote: You can also use hex color codes e.g. " + ctx.prefix + "qembed test #ff0000"
-
         if color is None:
             embed_color = self.colours[self.data["default_colour"]]()
         elif color.lower() not in self.colours:
@@ -84,10 +79,10 @@ class QuickEmbed:
                 if validhex(int(color, 16)):
                     embed_color = discord.Color(int(color, 16))
             except ValueError:
-                await self.bot.whisper("```fix\n" + invalid + "\n```")
+                await send_cmd_help(ctx)
                 return
             if not validhex(int(color, 16)):
-                await self.bot.whisper("```fix\n" + invalid + "\n```")
+                await send_cmd_help(ctx)
                 return
         else:
             embed_color = self.colours[color]()
