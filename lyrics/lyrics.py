@@ -71,6 +71,7 @@ class Lyrics:
             return
 
         else:
+            choice = int(choice.content)
             song = items[choice]['song_path']
             lyrics = lyrics_from_song_path(song)
             lyrics = pagify(lyrics)
