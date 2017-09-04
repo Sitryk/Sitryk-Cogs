@@ -44,7 +44,7 @@ class QuickEmbed:
     @checks.is_owner()
     async def _qeset(self, ctx):
         if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
+            await self.bot.send_cmd_help(ctx)
             await self.bot.say("```\nDEFAULT COLOUR: {}\n```".format(self.data["default_colour"]))
 
     @_qeset.command(aliases=[color], name="colour")
