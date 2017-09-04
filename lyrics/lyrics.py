@@ -113,7 +113,7 @@ class Lyrics:
             await self.bot.say("```\nLYRIC CHANNEL:\t{}\n```".format(ch))
 
     @_lyricset.command(name="channel", pass_context=True)
-    async def _lyricset_channel(self, ctx, channel):
+    async def _lyricset_channel(self, ctx, channel:discord.Channel):
         """Set the channel in which lyrics are posted
         Whispers if no channel is set
         to remove channel just enter 'None'
@@ -121,20 +121,17 @@ class Lyrics:
 
         server = ctx.message.server
         if channel is None:
-            await send_cmd_help(ctx)
+            self.settings[server.id]["CHANNEL"] = None
+            dataIO.save_json(self.JSON, self.settings)
+            await self.bot.say("Lyrics will now be sent in DMs")
             return
-        if channel.channel_mentions:
+        elif channel:
             self.settings[server.id]["CHANNEL"] = channel.channel_mentions[0].id
             dataIO.save_json(self.JSON, self.settings)
             channel = discord.utils.find(lambda c: c.id == self.settings[server.id]["CHANNEL"], ctx.message.server.channels)
             await self.bot.say("Lyrics will now be sent to {}".format(channel.mention))
-        elif channel == 'None':
-            self.settings[server.id]["CHANNEL"] = None
-            dataIO.save_json(self.JSON, self.settings)
-            await self.bot.say("Lyrics will now be sent in DMs")
-        else:
-            await send_cmd_help(ctx)
             return
+
 
 
 api_url = "https://api.genius.com"
