@@ -92,6 +92,7 @@ class Lyrics:
                     asyncio.sleep(0.1)
                     await send(page)
             else:
+                await self.bot.edit_message(place_holder, embed=discord.Embed(description="**I've sent the lyrics for** ***{} - {}*** to \n\n".format(items[choice]['song_title'], items[choice]['artist_name'], channel.name), color=discord.Color.green()))
                 await send(channel, embed=discord.Embed(description="**Following are the lyrics for** ***{} - {}***\n\n".format(items[choice]['song_title'], items[choice]['artist_name']), color=discord.Color.green()))
                 asyncio.sleep(0.2)
                 for page in lyrics:
