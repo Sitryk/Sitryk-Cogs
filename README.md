@@ -1,5 +1,5 @@
 # Sitryk-Cogs
-https://github.com/Sitryk/Sitryk-Cogs/issuesPlugins for Red Discord Bot
+Random cogs for Red Discord Bot
 
 **Lyrics**: I've seen this cog requested by many and I've asked many times myself so I decided to ensue the cog           
           Lyrics has a bs4 requirement for formatting the retrieved lyrics
