@@ -1,0 +1,10 @@
+{
+    "AUTHOR" : "Sitryk",
+    "SHORT" : "Track invites",
+    "DESCRIPTION" : "Track a bit of info about invites",
+    "REQUIREMENTS" : ["tabulate"],
+    "DISABLED" : false,
+    "NAME" : "InviteTrack",
+    "TAGS" : ["invite"],
+    "INSTALL_MSG" : "***```diff\n+ Thanks for installing InviteTrack from Sitryk's Cogs.```***\n```fix\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs```"
+}
