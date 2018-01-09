@@ -5,7 +5,11 @@ from .utils.dataIO import dataIO
 from .utils import chat_formatting as cf
 from .utils import checks
 from copy import deepcopy
-from tabulate import tabulate
+try:
+    from tabulate import tabulate
+    _have_tabulate = True
+except:
+    _have_tabulate = False
 from __main__ import send_cmd_help
 
 
@@ -135,7 +139,10 @@ def check_files():
 
 
 def setup(bot):
-    check_folders()
-    check_files()
-    n = InviteTracker(bot)
-    bot.add_cog(n)
+    if _have_tabulate:
+        check_folders()
+        check_files()
+        n = InviteTrack(bot)
+        bot.add_cog(n)
+    else:
+        raise RuntimeError("You need to run `pip3 install tabulate`")
