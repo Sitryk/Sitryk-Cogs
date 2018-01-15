@@ -54,52 +54,36 @@ class Genius:
 
     @lyricset.command(pass_context=True)
     async def channel(self, ctx, *, channel_name):
-        """Set the channel for lyrics to be sent to
+        """
+        Set the channel for lyrics to be sent to
         Note: to reset default channel to DMs enter dms
         """
         self._data_check(ctx)
         server = ctx.message.server
-        channel = discord.utils.find(lambda c: c.name.lower() == channel_name.lower(), server.channels)
-        if channel:
-            self.settings[server.id] = channel.id
-        elif not channel and channel_name.lower() == "dms":
-            self.settings[server.id] = None
+        chn = channel_name.lower().strip()
+        if chn == 'dms':
+            self.settings[server.id] = DEFAULT
+            await self.bot.say("Lyrics will now be sent to DMs")
         else:
-            return
+            channel = discord.utils.get(lambda c: c.name.lower().strip() == chn, server.channels)
+            if channel:
+                self.settings[server.id] = channel.id
+                await self.bot.say("Lyrics will now be sent to <#{}>".format(channel.id))
+            else:
+                dest = 'DMs' if self.settings[server.id]["CHANNEL"] is None else "<#{}>".format(self.bot.get_channel(self._get_settings(ctx)["CHANNEL"]))
+                await self.bot.say("Couldn't find that channel. Lyrics will still be sent to {}".format(dest))
         self.save_settings()
-
-
-    # @lyricset.command(pass_context=True, no_pm=True)
-    # async def autolyrics(self, ctx):
-    #     """Toggle the autolyrics feature"""
-    #     self._data_check(ctx)
-    #     server = ctx.message.server
-    #     channel = ctx.message.channel
-    #     AudioCog = self.bot.get_cog('Audio')
-    #     if not AudioCog:
-    #         self.settings[server.id]["AUTOLYRICS"] = False
-    #         self.save_settings()
-    #         await self.bot.say("You do not have the audio cog loaded.\n"
-    #                            "Load the audio cog to enable this setting.")
-    #         return
-    #     else:
-    #         self.settings[server.id]["AUTOLYRICS"] = not self.settings[server.id]["AUTOLYRICS"]
-    #         self.save_settings()
-    #         if self.settings[server.id]["AUTOLYRICS"]:
-    #             await self.bot.say("I will now recommend lyrics depending on what is playing"
-    #                                " from the audio cog")
-    #         else:
-    #             await self.bot.say("I will no longer recommend lyrics when audio is playing")
 
 # Base commands start
 
     @commands.command(pass_context=True)
     async def lyrics(self, ctx, *, query: str):
-        """Used to fetch lyrics from a search query
+        """
+        Used to fetch lyrics from a search query
         Usage: [p]lyrics white ferrari
-               [p]lyrics syrup sandwiches
+               [p]lyrics i wish that i grow up, the way in which you grow up
 
-        Tip: You can use '[p]lyrics now playing' to
+        Tip: You can use '[p]lyrics --p' to
         search for what's currently playing in audio
         """
 
@@ -108,6 +92,7 @@ class Genius:
         self._data_check(ctx)
 
         AudioCog = self.bot.get_cog('Audio')
+        query = query.strip()
         if AudioCog:
             if query in ("now playing", "audio", "current", "--p") and AudioCog.isplaying(server):
                 query = AudioCog._get_queue_nowplaying(server).title
@@ -155,7 +140,6 @@ class Genius:
         if choice is None or choice.content == '0':
             e = discord.Embed(description= "Cancelled", colour= discord.Colour.dark_red())
             await self.bot.edit_message(sent, embed=e)
-            del(e)
             return
         else:
             choice = int(choice.content)
@@ -175,20 +159,21 @@ class Genius:
             e = discord.Embed(colour=16776960) # Aesthetics
             e.set_author(name="Requested lyrics for {} - {}".format(t, a), icon_url=loadgif)
             await self.bot.edit_message(sent, embed=e)
-            del(e)
+
 
             e = discord.Embed(colour=discord.Colour.green()) # Aesthetics
             e.set_author(name="Here are the lyrics for {} - {}".format(t, a), icon_url=greentick)
             await self.bot.send_message(destination, embed=e)
-            del(e)
 
+            print(lyrics)
             for page in lyrics: # Send the lyrics
-                await self.bot.send_message(destination, page)
+                if len(page) >= 1:
+                    await self.bot.send_message(destination, page)
 
             e = discord.Embed(colour=discord.Colour.green()) # Aesthetics
             e.set_author(name="Sent lyrics for {} - {}".format(t, a), icon_url=greentick)
             await self.bot.edit_message(sent, embed=e)
-            del(e)
+
 
     @commands.command(pass_context=True)
     async def genius(self, ctx, *, query: str):
@@ -346,48 +331,14 @@ class Genius:
 
             lyrics = await lyrics_from_path(extra_data[page+1]['url'])
             lyrics = pagify(lyrics)
+            print(lyrics)
             for p in lyrics:
-                await self.bot.send_message(destination, p)
+                if len(page) >= 1:
+                    await self.bot.send_message(destination, page)
 
             e = discord.Embed(colour=discord.Colour.green())
             e.set_author(name="Sent lyrics for {} - {}".format(artist, title), icon_url=greentick)
             await self.bot.edit_message(message, embed=e)
-
-        # elif react == "queue in audio":
-        #     AudioCog = self.bot.get_cog('Audio')
-        #     if not AudioCog:
-        #         e = discord.Embed(description="ERROR: Audio module not loaded", colour=discord.Colour.red())
-        #         await self.bot.edit_message(message, embed=e)
-        #         await self.bot.delete_message(message)
-        #         return
-
-        #     search = extra_data[page+1]['full title']
-
-        #     e = discord.Embed(colour=16776960)
-        #     e.set_author(name="Searching youtube for {}".format(search), icon_url=loadgif)
-        #     await self.bot.edit_message(message, embed= e)
-
-
-        #     try:
-        #         await self.bot.remove_reaction(message, "▶", author)
-        #     except:
-        #         pass
-        #     try:
-        #         try:
-        #             await self.bot.clear_reactions(message)
-        #         except:
-        #             await self.bot.remove_reaction(message, "⬅", self.bot.user)
-        #             await self.bot.remove_reaction(message, "🎶", self.bot.user)
-        #             await self.bot.remove_reaction(message, "❌", self.bot.user)
-        #             await self.bot.remove_reaction(message, "▶", self.bot.user)
-        #             await self.bot.remove_reaction(message, "➡", self.bot.user)
-        #     except:
-        #         pass
-        #     await ctx.invoke(AudioCog.play, ctx=ctx, url_or_search_terms=search)
-
-        #     e = discord.Embed(colour=16776960)
-        #     e.set_author(name="Queued <youtube title> {}".format(search), icon_url=loadgif)
-        #     await self.bot.edit_message(message, embed= e)
 
         else:
             return await self.bot.delete_message(message)
