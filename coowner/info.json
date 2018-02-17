@@ -1,9 +1,0 @@
-{
-    "AUTHOR" : "Sitryk",
-    "SHORT" : "Allow a co-owner to have access like you do!",
-    "DESCRIPTION" : "Do you continually complain about not having a co-owner? Well not anymore!\n\nToday on special we have one co-owner cog absolutely free! Order now with the installation commands.",
-    "DISABLED" : false,
-    "NAME" : "CoOwner",
-    "TAGS" : ["coowner", "utility", "tools", "management"],
-    "INSTALL_MSG" : "Thanks for installing coowner from Sitryk's Cogs.\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs\n\n```fix WARNING: Any events that take place and lead to unfortunate results from a co-owner are responsibility of the owner alone.\nI advise you only add co-owners you really trust as they actually run the command as YOU.```"
-}
