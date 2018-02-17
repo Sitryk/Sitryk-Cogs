@@ -1,0 +1,10 @@
+{
+    "AUTHOR" : "Sitryk",
+    "SHORT" : "Clear console errors",
+    "DESCRIPTION" : "Trying to read that error but your console is full? Clear your console today! With this one simple trick",
+    "REQUIREMENTS" : [],
+    "DISABLED" : false,
+    "NAME" : "ClearConsole",
+    "TAGS" : ["utility", "cmd", "console", "error"],
+    "INSTALL_MSG" : "***```diff\n+ Thanks for installing consoleclearer from Sitryk Cogs.```***\n```fix\nPost any issues on my github here:\nhttps://github.com/Sitryk/Sitryk-Cogs```"
+}
